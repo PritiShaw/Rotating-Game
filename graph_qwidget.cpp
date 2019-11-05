@@ -4,7 +4,7 @@
 
 graph_qWidget::graph_qWidget(QWidget *parent) : QWidget(parent)
 {
-    ker = 3;
+    ker = 30;
     brushColorIdx = 0;
 }
 int graph_qWidget::linearSearch(int x,int y){    
@@ -16,21 +16,6 @@ int graph_qWidget::linearSearch(int x,int y){
     return -1;
 }
 
-void graph_qWidget::mouseMoveEvent(QMouseEvent *ev){
-    this->x = ev->x();
-    this->y = ev->y();
-    emit Mouse_Pos();
-}
-
-void graph_qWidget::mousePressEvent(QMouseEvent *ev){
-    this->x = ev->x();
-    this->y = ev->y();
-    emit Mouse_Pressed();
-}
-
-void graph_qWidget::leaveEvent(QEvent *){
-    emit Mouse_Left();
-}
 void graph_qWidget::paintEvent(QPaintEvent *pe) {
     QStyleOption styleOption;
     styleOption.init(this);
@@ -40,7 +25,7 @@ void graph_qWidget::paintEvent(QPaintEvent *pe) {
     int half = size/2;
 
     if ( ker==1 ){
-        painter.setPen(QPen(Qt::green, ker, Qt::DotLine));
+        painter.setPen(QPen(Qt::black, ker, Qt::DotLine));
         painter.drawLine(half,0,half,size);
         painter.drawLine(0,half,size,half);
     }
@@ -48,20 +33,12 @@ void graph_qWidget::paintEvent(QPaintEvent *pe) {
         for(int i = -1*half; i<=half; i+=1){
             if (abs(i)%ker!=0)
                 continue;
-            painter.setPen(QPen(Qt::darkGreen, 1, Qt::SolidLine));
+            painter.setPen(QPen(QColor(33,46,54), 2.5, Qt::SolidLine));
             painter.drawLine(i+half,0,i+half,size);
             painter.drawLine(0,i+half,size,i+half);
         }
-        for(int i=-ker;i<=0;i++){
-            painter.setPen(QPen(Qt::green, 1, Qt::SolidLine));
-            painter.drawLine(i+half,0,i+half,size);
-            painter.drawLine(0,i+half,size,i+half);
-            continue;
-        }
-    }
 
-    painter.setPen(QPen(Qt::white, ker, Qt::SolidLine));
-    painter.drawPoint(half-ker/2,half-ker/2);
+    }
     QVector<QPair<QPair<int,int>, int> >::iterator it;
     QColor brushColor;
     for(it =  points.begin(); it != points.end() ; ++it){
